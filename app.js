@@ -3,7 +3,7 @@ const led = new Gpio(4, 'out')
 
 const interval = setInterval(() => {
   led.writeSync(led.readSync() ^ 1)
-}, 2000)
+}, 500)
 
 process.on('SIGINT', function () {
   clearInterval(interval)
