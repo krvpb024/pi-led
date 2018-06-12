@@ -1,15 +1,12 @@
-var Cylon = require("cylon");
+const Gpio = require('onoff').Gpio
+const led = new Gpio(4, 'out')
 
-Cylon.robot({
-  connections: {
-    raspi: { adaptor: 'raspi' }
-  },
+const interval = setInterval(() => {
+  led.writeSync(led.readSync() ^ 1)
+})
 
-  devices: {
-    led: { driver: 'led', pin: 7 }
-  },
-
-  work: function(my) {
-    every((1).second(), my.led.toggle);
-  }
-}).start();
+process.on('SIGINT', function () {
+  clearInterval(interval)
+  led.writeSync(0)
+  led.unexport()
+})
